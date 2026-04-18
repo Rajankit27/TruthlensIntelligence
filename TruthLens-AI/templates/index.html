@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruthLens Intelligence | Fake News Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <svg class="magnifier-logo" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Main magnifier circle with thinner stroke -->
+                        <circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+                        
+                        <!-- Simple inner lens -->
+                        <circle cx="20" cy="20" r="10" fill="rgba(37, 99, 235, 0.08)" stroke="currentColor" stroke-width="0.8"/>
+                        
+                        <!-- Handle -->
+                        <path d="M28 28 L33 33" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        
+                        <!-- Glass reflections -->
+                        <circle cx="18" cy="18" r="1.5" fill="rgba(255, 255, 255, 0.8)"/>
+                        <circle cx="22" cy="16" r="0.8" fill="rgba(255, 255, 255, 0.4)"/>
+                    </svg>
+                    <div class="logo-text">
+                        <h1 class="logo">TruthLens</h1>
+                        <p class="edition">INTELLIGENCE</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="menu">
+                <a href="#" class="menu-item active" id="side-dashboard">📊 Dashboard</a>
+                <a href="#" class="menu-item" id="side-analyze">🔍 Analyze</a>
+                <a href="#" class="menu-item" id="side-history">🕰️ Intelligence Log</a>
+                
+                <!-- Admin Console Link -->
+                <div id="admin-divider" style="border-top: 1px solid var(--border, rgba(0,0,0,0.1)); margin: 15px 24px 5px 24px;"></div>
+                <a href="/admin/" class="menu-item" id="side-admin">🛡️ Admin Console</a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <button id="themeToggle" class="theme-toggle-btn">🌙 Dark Mode</button>
+                <div id="user-profile-auth">
+                    <div class="user-profile">
+                        <div class="user-avatar" id="user-avatar">?</div>
+                        <div class="user-details">
+                            <p class="user-name" id="display-username">Loading...</p>
+                            <p class="user-status">Online</p>
+                        </div>
+                    </div>
+                    <div class="sidebar-footer">
+                        <button id="logout-btn" class="logout-btn">LOGOUT</button>
+                    </div>
+                </div>
+                
+                <div id="user-profile-guest" class="hidden">
+                    <div class="sidebar-footer">
+                        <a href="/auth/register" class="login-redirect-btn">Login / Register</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Container -->
+        <main class="main">
+            <!-- Header with Theme Toggle & Multi-Layer Ticker -->
+            <header class="dashboard-header">
+                <div class="top-wrapper">
+                    <!-- Global Project Title -->
+                    <h2 class="main-project-title" style="width: 100%; text-align: center; font-size: 1.25rem; font-weight: 900; background: linear-gradient(90deg, var(--primary), #7c3aed); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">
+                        TruthLens Intelligence — Real-time Fake News Detection System
+                    </h2>
+
+                    <!-- Top Slim Status Bar -->
+                    <div class="status-ticker">
+                        <span class="status-ticker-content">🔹 TruthLens Intelligence Active • 🌍 Real-time Analysis •
+                            AI Verification • 🛡️ Secure Node Connection • ⚡ Low Latency Processing</span>
+                    </div>
+
+                    <!-- Unified Top Section -->
+                    <div class="top-section">
+                        <!-- Main Live News Ticker -->
+                        <div class="ticker">
+                            <div class="ticker-content">
+                                <span id="ticker-full-line">🔴 LIVE • Sources: BBC, Reuters — Fetching latest intelligence stream from global sources...</span>
+                            </div>
+                            <button id="verify-ticker-top" class="ticker-btn">Verify Now</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Globally Reusable SVG Gradients -->
+            <svg width="0" height="0" style="position: absolute;">
+                <defs>
+                    <linearGradient id="spark-gradient" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.3"></stop>
+                        <stop offset="100%" stop-color="var(--primary)" stop-opacity="0.0"></stop>
+                    </linearGradient>
+                    <linearGradient id="blue-gradient" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"></stop>
+                        <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.0"></stop>
+                    </linearGradient>
+                    <!-- Shield Logo Gradients -->
+                    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#2d3748"/>
+                        <stop offset="50%" stop-color="#1e293b"/>
+                        <stop offset="100%" stop-color="#0f172a"/>
+                    </linearGradient>
+                    <linearGradient id="shieldBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#475569"/>
+                        <stop offset="50%" stop-color="#334155"/>
+                        <stop offset="100%" stop-color="#1e293b"/>
+                    </linearGradient>
+                    <linearGradient id="lensGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#374151"/>
+                        <stop offset="50%" stop-color="#1e293b"/>
+                        <stop offset="100%" stop-color="#0f172a"/>
+                    </linearGradient>
+                    <linearGradient id="lensBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#64748b"/>
+                        <stop offset="50%" stop-color="#475569"/>
+                        <stop offset="100%" stop-color="#334155"/>
+                    </linearGradient>
+                    <linearGradient id="blueCircle" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#3b82f6"/>
+                        <stop offset="50%" stop-color="#2563eb"/>
+                        <stop offset="100%" stop-color="#1d4ed8"/>
+                    </linearGradient>
+                    <linearGradient id="blueBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#1e40af"/>
+                        <stop offset="50%" stop-color="#2563eb"/>
+                        <stop offset="100%" stop-color="#1e40af"/>
+                    </linearGradient>
+                    <linearGradient id="circleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#64748b"/>
+                        <stop offset="50%" stop-color="#475569"/>
+                        <stop offset="100%" stop-color="#334155"/>
+                    </linearGradient>
+                    <linearGradient id="outerEyeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#1e293b"/>
+                        <stop offset="50%" stop-color="#334155"/>
+                        <stop offset="100%" stop-color="#475569"/>
+                    </linearGradient>
+                    <linearGradient id="neonBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#60a5fa"/>
+                        <stop offset="50%" stop-color="#3b82f6"/>
+                        <stop offset="100%" stop-color="#2563eb"/>
+                    </linearGradient>
+                    <linearGradient id="metallicGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#94a3b8"/>
+                        <stop offset="50%" stop-color="#cbd5e1"/>
+                        <stop offset="100%" stop-color="#e2e8f0"/>
+                    </linearGradient>
+                    <linearGradient id="circuitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#64748b"/>
+                        <stop offset="50%" stop-color="#3b82f6"/>
+                        <stop offset="100%" stop-color="#60a5fa"/>
+                    </linearGradient>
+                    <radialGradient id="irisGradient">
+                        <stop offset="0%" stop-color="#dbeafe"/>
+                        <stop offset="30%" stop-color="#60a5fa"/>
+                        <stop offset="60%" stop-color="#3b82f6"/>
+                        <stop offset="100%" stop-color="#1e40af"/>
+                    </radialGradient>
+                    <linearGradient id="neonGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#93c5fd"/>
+                        <stop offset="50%" stop-color="#60a5fa"/>
+                        <stop offset="100%" stop-color="#3b82f6"/>
+                    </linearGradient>
+                    <radialGradient id="innerIrisGradient">
+                        <stop offset="0%" stop-color="#1e40af"/>
+                        <stop offset="50%" stop-color="#2563eb"/>
+                        <stop offset="100%" stop-color="#1e3a8a"/>
+                    </radialGradient>
+                    <linearGradient id="lensGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#60a5fa"/>
+                        <stop offset="50%" stop-color="#3b82f6"/>
+                        <stop offset="100%" stop-color="#1d4ed8"/>
+                    </linearGradient>
+                    <linearGradient id="scanningGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="50%" stop-color="#93c5fd"/>
+                        <stop offset="100%" stop-color="#60a5fa"/>
+                    </linearGradient>
+                    <linearGradient id="scanLineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#60a5fa"/>
+                        <stop offset="50%" stop-color="#3b82f6"/>
+                        <stop offset="100%" stop-color="#1d4ed8"/>
+                    </linearGradient>
+                    <radialGradient id="glowSpot">
+                        <stop offset="0%" stop-color="#93c5fd"/>
+                        <stop offset="50%" stop-color="#60a5fa"/>
+                        <stop offset="100%" stop-color="#3b82f6"/>
+                    </radialGradient>
+                    <radialGradient id="nodeGradient">
+                        <stop offset="0%" stop-color="#60a5fa"/>
+                        <stop offset="50%" stop-color="#3b82f6"/>
+                        <stop offset="100%" stop-color="#2563eb"/>
+                    </radialGradient>
+                </defs>
+            </svg>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-header">
+                        <label>TOTAL SCANS</label>
+                        <span class="stat-icon">📈</span>
+                    </div>
+                    <h3 id="stat-scans">--</h3>
+                    <div class="sparkline-container">
+                        <svg class="sparkline" viewBox="0 0 100 30" preserveAspectRatio="none">
+                            <path class="fill" d="M0,30 L0,20 L10,25 L20,15 L30,22 L40,10 L50,18 L60,8 L70,15 L80,5 L90,12 L100,0 L100,30 Z"></path>
+                            <path class="line" d="M0,20 L10,25 L20,15 L30,22 L40,10 L50,18 L60,8 L70,15 L80,5 L90,12 L100,0"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card stat-card" style="box-shadow: 0 4px 6px -1px var(--shadow-color, rgba(0,0,0,0.1));">
+                    <div class="stat-header">
+                        <label>THREAT LEVEL</label>
+                        <span class="stat-icon">🛡️</span>
+                    </div>
+                    <h3 id="stat-threat">Low</h3>
+                    <div class="sparkline-container">
+                        <div class="sparkbar">
+                            <div class="sparkbar-bar active" style="height: 30%;"></div>
+                            <div class="sparkbar-bar active" style="height: 60%;"></div>
+                            <div class="sparkbar-bar active" style="height: 40%;"></div>
+                            <div class="sparkbar-bar active" style="height: 80%;"></div>
+                            <div class="sparkbar-bar active" style="height: 20%;"></div>
+                            <div class="sparkbar-bar" style="height: 60%;"></div>
+                            <div class="sparkbar-bar" style="height: 30%;"></div>
+                            <div class="sparkbar-bar" style="height: 50%;"></div>
+                            <div class="sparkbar-bar" style="height: 40%;"></div>
+                            <div class="sparkbar-bar" style="height: 70%;"></div>
+                            <div class="sparkbar-bar" style="height: 20%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-header">
+                        <label>SYSTEM INTEGRITY</label>
+                        <span class="stat-icon">✅</span>
+                    </div>
+                    <h3 id="stat-integrity">99.9%</h3>
+                    <div class="sparkline-container">
+                        <svg class="sparkline" viewBox="0 0 100 30" preserveAspectRatio="none">
+                            <path class="fill" style="fill: url(#blue-gradient);" d="M0,30 L0,15 L20,16 L40,14 L60,16 L80,15 L100,16 L100,30 Z"></path>
+                            <path class="line" style="stroke: #3b82f6;" d="M0,15 L20,16 L40,14 L60,16 L80,15 L100,16"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card stat-card transition-all duration-300 ease-in-out shadow-sm hover:shadow-xl rounded-xl hover:-translate-y-1 hover:shadow-blue-500/20">
+                    <div class="stat-header">
+                        <label class="drop-shadow-sm font-semibold">API LATENCY</label>
+                        <span class="stat-icon">⏱️</span>
+                    </div>
+                    <h3 id="stat-latency" class="drop-shadow-md font-bold tracking-tight">12 ms</h3>
+                    <div class="sparkline-container">
+                        <svg class="sparkline" viewBox="0 0 100 30" preserveAspectRatio="none">
+                            <path class="line" style="stroke: var(--primary);" d="M0,20 L10,25 L20,10 L30,28 L40,15 L50,22 L60,5 L70,20 L80,10 L90,25 L100,15"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 19: Live Intelligence Feed -->
+            <section class="intelligence-feed">
+                <div class="feed-header">
+                    <h2>Live Intelligence Feed</h2>
+                    <span class="feed-badge">REAL-TIME</span>
+                </div>
+                <div id="feed-container" class="feed-grid"></div>
+            </section>
+
+            <!-- Main Split Layout -->
+            <div class="content">
+                <!-- LEFT: Analyzer Terminal + Result -->
+                <div class="left-panel flex flex-col gap-6">
+                    <div class="terminal card">
+                        <div class="terminal-header">
+                            <h3>❯ Active Analysis Terminal</h3>
+                            <div class="tabs">
+                                <button class="tab active" data-mode="text">Text</button>
+                                <button class="tab" data-mode="global">Global</button>
+                                <button class="tab" data-mode="url">URL</button>
+                            </div>
+                        </div>
+
+                        <div id="terminal-output" class="terminal-output"></div>
+
+                        <form id="analyze-form">
+                            <div class="relative">
+                                <textarea id="textInput" name="text" rows="6"
+                                    placeholder="Enter news article for forensic analysis..."></textarea>
+                                <input type="url" id="urlInput" name="url" style="display:none;"
+                                    placeholder="https://news-source.com/article...">
+                            </div>
+
+                            <div class="form-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                                <div>
+                                    <span style="background:var(--card-bg, #e0f2fe); color:var(--primary, #0284c7); padding: 5px 12px; border-radius:6px; font-size:0.75rem; font-weight:600; margin-right:10px;">NLP Model: v4.2</span>
+                                    <span style="background:#f3e8ff; color:#9333ea; padding: 5px 12px; border-radius:6px; font-size:0.75rem; font-weight:600;">XAI: Enabled</span>
+                                </div>
+                                <div style="display:flex; gap:10px;">
+                                    <button type="button" id="verify-now" class="verify-btn hidden">Verify Ticker</button>
+                                    <button type="submit" id="submit-btn" class="run-btn" style="background: #0ea5e9; color: white; padding: 10px 20px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer;">Run Diagnostics</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div id="loading" class="hidden">
+                            <div class="spinner"></div> Decoding Neural Vectors...
+                        </div>
+                    </div>
+
+                    <!-- Result Card (Premium Light Gradient) -->
+                    <!-- Result Card (Premium Light Gradient) -->
+                    <div id="result" class="result hidden result-card-container mt-8">
+                        <div class="result-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
+                            <div>
+                                <h3 id="result-badge" style="font-size: 1.6rem; margin-bottom: 4px; font-weight: 700;">Content Verified</h3>
+                                <p style="color: var(--text-muted); font-size: 0.9rem;">Model Analysis</p>
+                            </div>
+                            <div style="text-align: right; display:flex; align-items:center; gap: 15px;">
+                                <div>
+                                    <div style="color: var(--text-muted); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Confidence</div>
+                                    <h4 id="result-confidence" style="font-size: 2rem; font-weight: 700; margin: 0;">--%</h4>
+                                </div>
+                                <!-- CSS Circular Progress (Using conic-gradient injected by JS) -->
+                                <div id="conf-ring" class="conf-ring-bg" style="width: 44px; height: 44px; border-radius: 50%; display:flex; align-items:center; justify-content:center;">
+                                    <div class="conf-ring-inner" style="width: 32px; height: 32px; border-radius: 50%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Insight & Analysis -->
+                        <div id="insight-box" class="insight-box">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--info); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">
+                                AI Insight & Analysis
+                            </div>
+                            <p id="insight-text" style="color: var(--text); font-size: 0.95rem; line-height: 1.6; margin: 0;">Generating forensic natural language bounds...</p>
+                        </div>
+
+                        <div id="url-insight" class="hidden" style="margin-bottom: 24px;">
+                            <small id="url-source" style="color: var(--text-muted); display:block; margin-bottom:8px;"></small>
+                            <p id="url-preview" class="url-preview-text"></p>
+                        </div>
+
+                        <!-- Feedback Box -->
+                        <div id="dispute-container" class="dispute-container hidden">
+                            <span style="color: var(--text-muted); font-size: 0.95rem;">Do you agree with this analysis?</span>
+                            <div style="display: flex; gap: 12px;">
+                                <button id="agree-btn" class="btn-agree">👍 AGREE</button>
+                                <button id="dispute-btn" class="btn-disagree">👎 DISAGREE</button>
+                            </div>
+                        </div>
+
+                        <!-- Contributors -->
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 12px; text-transform: uppercase;">SIGNAL CONTRIBUTORS</div>
+                            <div id="keyword-highlights" class="tags" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: User Intelligence History -->
+                <div class="history-panel">
+                    <div class="history-header">
+                        <h3>Your Intelligence Log</h3>
+                    </div>
+                    <div id="history-container" class="history-list"></div>
+                </div>
+            </div>
+
+            <!-- Footer Integration -->
+            <footer class="site-footer">
+              <div class="footer-wrapper">
+                <div class="footer-top">
+                  <div class="brand-col">
+                    <div class="logo-container">
+                        <svg class="magnifier-logo" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Main magnifier circle with thinner stroke -->
+                            <circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+                            
+                            <!-- Simple inner lens -->
+                            <circle cx="20" cy="20" r="10" fill="rgba(37, 99, 235, 0.08)" stroke="currentColor" stroke-width="0.8"/>
+                            
+                            <!-- Handle -->
+                            <path d="M28 28 L33 33" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                            
+                            <!-- Glass reflections -->
+                            <circle cx="18" cy="18" r="1.5" fill="rgba(255, 255, 255, 0.8)"/>
+                            <circle cx="22" cy="16" r="0.8" fill="rgba(255, 255, 255, 0.4)"/>
+                        </svg>
+                        <div class="logo-text">
+                            <h1 class="logo">TruthLens</h1>
+                            <p class="edition">INTELLIGENCE</p>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-muted, #64748b); font-size: 0.85rem; line-height: 1.6; margin-top: 16px; max-width: 260px;">
+                      TruthLens Intelligence is an AI-powered fake news detection platform offering real-time analysis, intelligent logging, and a powerful Admin Console for monitoring and control&mdash;ensuring accurate and trustworthy results.
+                    </p>
+                  </div>
+                  <div class="links-container">
+                    <div class="nav-col">
+                      <h4>Quick Links</h4>
+                      <ul class="nav-list">
+                        <li class="nav-item-list">
+                          <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                          <a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="#" onclick="document.getElementById('side-dashboard').click(); return false;">Dashboard</a>
+                        </li>
+                        <li class="nav-item-list">
+                          <svg class="nav-icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" fill="none" stroke="#3b82f6" stroke-width="2"/></svg>
+                          <a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="#" onclick="document.getElementById('side-analyze').click(); return false;">Analyze</a>
+                        </li>
+                        <li class="nav-item-list">
+                          <svg class="nav-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8" fill="none" stroke="#3b82f6" stroke-width="2"/><line x1="16" y1="13" x2="8" y2="13" stroke="#3b82f6" stroke-width="2"/><line x1="16" y1="17" x2="8" y2="17" stroke="#3b82f6" stroke-width="2"/></svg>
+                          <a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="#" onclick="document.getElementById('side-history').click(); return false;">Intelligence Log</a>
+                        </li>
+                        <li class="nav-item-list">
+                          <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="#3b82f6" stroke-width="2"/></svg>
+                          <a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="/admin/">Admin Console</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="nav-col">
+                      <h4>Resources</h4>
+                      <ul class="nav-list">
+                        <li class="nav-item-list"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" fill="none" stroke="#3b82f6" stroke-width="2"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" fill="none" stroke="#3b82f6" stroke-width="2"/></svg><a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="/blog" target="_blank">Blog</a></li>
+                        <li class="nav-item-list"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="#3b82f6" stroke-width="2"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" fill="none" stroke="#3b82f6" stroke-width="2"/><line x1="12" y1="17" x2="12.01" y2="17" stroke="#3b82f6" stroke-width="3"/></svg><a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="/faq" target="_blank">FAQ</a></li>
+                        <li class="nav-item-list"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="none" stroke="#3b82f6" stroke-width="2"/></svg><a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="/help" target="_blank">Help Center</a></li>
+                      </ul>
+                    </div>
+                    <div class="nav-col">
+                      <h4>Company</h4>
+                      <ul class="nav-list">
+                        <li class="nav-item-list"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4" fill="none" stroke="#3b82f6" stroke-width="2"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="#3b82f6" stroke-width="2"/></svg><a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="/about" target="_blank">About Us</a></li>
+                        <li class="nav-item-list"><svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="#3b82f6" stroke-width="2"/><polyline points="12 6 12 12 16 14" fill="none" stroke="#3b82f6" stroke-width="2"/></svg><a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="/how" target="_blank">How It Works</a></li>
+                        <li class="nav-item-list"><svg class="nav-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.02 3.18 2 2 0 012 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.9a16 16 0 006.29 6.29l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" fill="none" stroke="#3b82f6" stroke-width="2"/></svg><a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="/contact" target="_blank">Contact Us</a></li>
+                      </ul>
+                    </div>
+                    <div class="legal-col">
+                      <ul class="legal-list">
+                        <li><a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="/privacy" target="_blank">Privacy Policy</a></li>
+                        <li><a class="transition duration-200 hover:text-blue-500 hover:underline underline-offset-4" href="/terms" target="_blank">Terms of Service</a></li>
+                      </ul>
+                      <div class="social-row">
+                        <a href="#" class="soc-circle soc-fb"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                        <a href="#" class="soc-circle soc-tw"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                        <a href="#" class="soc-circle soc-in"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+                        <a href="#" class="soc-circle soc-yt"><svg viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="footer-bottom">
+                  <span class="copyright">&copy; 2026 TruthLens Intelligence. All rights reserved.</span>
+                </div>
+              </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="auth-overlay" class="hidden"></div>
+    <script defer src="{{ url_for('static', filename='js/main.js') }}?v=21.7"></script>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frequently Asked Questions - TruthLens Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #fafbfc; color: #111827; margin: 0; padding: 40px 20px; line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 60px 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
+    h1 { font-size: 2.2rem; color: #1e293b; margin-bottom: 24px; font-weight: 800; letter-spacing: -0.02em; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
+    h2 { font-size: 1.25rem; color: #3b82f6; margin-top: 30px; margin-bottom: 10px; }
+    p { margin-bottom: 25px; color: #4b5563; font-size: 1.05rem; }
+    .back { display: inline-block; text-decoration: none; color: white; background: #3b82f6; font-weight: 600; padding: 12px 24px; border-radius: 8px; transition: 0.2s; margin-top: 10px; }
+    .back:hover { background: #2563eb; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Frequently Asked Questions</h1>
+    
+    <h2>How accurate is TruthLens?</h2>
+    <p>TruthLens achieves high detection margins by combining a Calibrated Classifier trained on tens of thousands of verified datasets with real-time domain reputation heuristics. However, it is an assistive tool and should serve alongside human critical thinking.</p>
+
+    <h2>Why did a real news article get flagged as Fake?</h2>
+    <p>Sometimes, legitimate news outlets publish highly sensationalized op-eds or use heavy clickbait wording. Because our ML model actively hunts for these linguistic patterns, it may occasionally flag highly emotive true articles. If you encounter this, use our "Dispute" tool in the UI!</p>
+    
+    <h2>What happens to the URLs I scan?</h2>
+    <p>Scanned URLs and texts are logged securely to our MongoDB database connected solely to the Admin Console telemetry grid. This helps us retrain our models under the "Model Retraining" pipeline.</p>
+
+    <h2>Can it read Behind Paywalls?</h2>
+    <p>Currently, our Python web scrapers cannot extract full text behind strict subscriber paywalls. For these articles, we fall back heavily on URL reputation combined with headline analysis.</p>
+
+    <a href="/" class="back">Return to Dashboard</a>
+  </div>
+</body>
+</html>

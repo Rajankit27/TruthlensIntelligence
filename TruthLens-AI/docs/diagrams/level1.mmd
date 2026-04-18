@@ -1,0 +1,46 @@
+graph TD
+    classDef entity fill:#e2e8f0,stroke:#64748b,stroke-width:2px,color:#0f172a
+    classDef process fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a
+    classDef datastore fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e
+
+    User["External Entity: User"]:::entity
+    Admin["External Entity: Admin"]:::entity
+
+    P1(("1.0 Input<br/>Processing")):::process
+    P2(("2.0 Data<br/>Preprocessing")):::process
+    P3(("3.0 ML Prediction<br/>Engine")):::process
+    P4(("4.0 Result<br/>Generation")):::process
+    P5(("5.0 User Feedback<br/>Handling")):::process
+    P6(("6.0 Dispute<br/>Management System")):::process
+    P7(("7.0 Admin Console<br/>& Monitoring")):::process
+    P8(("8.0 Model Retraining<br/>Pipeline")):::process
+
+    DS1[("D1: News Dataset<br/>(CSV Files)")]:::datastore
+    DS2[("D2: User History<br/>(MongoDB)")]:::datastore
+    DS3[("D3: Disputes Collection<br/>(MongoDB)")]:::datastore
+    DS4[("D4: Trained Model<br/>(model.pkl)")]:::datastore
+
+    User -- "Raw Input" --> P1
+    P1 -- "Normalized Text" --> P2
+    P2 -- "Cleaned Tokens" --> P3
+    DS4 -- "Loaded Weights/TF-IDF" --> P3
+    P3 -- "Classification Arrays" --> P4
+    P4 -- "Structured Output" --> User
+    
+    User -- "Implicit/Explicit Feedback" --> P5
+    P5 -- "Agree (Log to History)" --> DS2
+    P5 -- "Disagree (Submit Dispute)" --> P6
+    P6 -- "New Pending Dispute" --> DS3
+    
+    Admin -- "Monitor Analytics" --> P7
+    DS2 -- "Usage Stats" --> P7
+    DS3 -- "Dispute Logs" --> P7
+    P7 -- "Dashboards/Insights" --> Admin
+    
+    Admin -- "Resolve & Assign Label" --> P6
+    P6 -- "Status: Resolved" --> DS3
+
+    Admin -- "Trigger Batch Retrain" --> P8
+    DS1 -- "Baseline Static Dataset" --> P8
+    DS3 -- "Verified Dispute Data" --> P8
+    P8 -- "Updated ML Weights" --> DS4

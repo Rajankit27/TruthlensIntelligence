@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engineering Blog - TruthLens Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #fafbfc; color: #111827; margin: 0; padding: 40px 20px; line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 60px 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
+    h1 { font-size: 2.2rem; color: #1e293b; margin-bottom: 24px; font-weight: 800; letter-spacing: -0.02em; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
+    p { margin-bottom: 30px; color: #4b5563; font-size: 1.05rem; }
+    .post { border-left: 4px solid #3b82f6; padding-left: 20px; margin-bottom: 40px; background: #f8fafc; padding-top: 15px; padding-bottom: 15px; padding-right: 15px; border-radius: 0 8px 8px 0;}
+    .post.older { border-left-color: #94a3b8; }
+    .post h3 { margin-top: 0; margin-bottom: 5px; color: #1e293b; font-size: 1.3rem;}
+    .post small { color: #64748b; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;}
+    .post p { margin-top: 10px; margin-bottom: 0; font-size: 0.95rem; }
+    .back { display: inline-block; text-decoration: none; color: white; background: #3b82f6; font-weight: 600; padding: 12px 24px; border-radius: 8px; transition: 0.2s; margin-top: 10px; }
+    .back:hover { background: #2563eb; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TruthLens Engineering Blog</h1>
+    <p>Insights, release notes, and deep-dives from the machine learning team behind TruthLens Intelligence.</p>
+    
+    <div class="post">
+        <h3>🔹 Project Review 3: Production-Ready System</h3>
+        <small>PUBLISHED: RECENTLY</small>
+        <p style="margin-bottom: 10px;">In our final review, we focused on making TruthLens Intelligence production-ready with advanced features and system refinement. We implemented Explainable AI (XAI), allowing users to see the key words influencing predictions, improving transparency and trust.</p>
+        <p style="margin-bottom: 10px;">A powerful Admin Console was developed with role-based access control (RBAC), enabling user management, dispute handling, and system monitoring. We also integrated a model retraining pipeline to continuously improve accuracy.</p>
+        <p style="margin-bottom: 10px;">The system was successfully deployed on a live server, making it accessible online. Alongside this, we completed full project documentation, including SRS, architecture design, and system diagrams.</p>
+        <p>This phase represents the completion of a scalable, intelligent, and real-world ready fake news detection platform.</p>
+    </div>
+
+    <div class="post older">
+        <h3>🔹 Project Review 2: Scaling and Integration</h3>
+        <small>PUBLISHED: 2 WEEKS AGO</small>
+        <p style="margin-bottom: 10px;">In Review 2, we transformed our core system into a fully integrated platform. We connected the frontend dashboard with the backend API, enabling users to analyze both text and URLs seamlessly.</p>
+        <p style="margin-bottom: 10px;">We implemented secure authentication using JWT, allowing users to register, log in, and access personalized features. MongoDB was integrated to store user data and analysis history, ensuring persistence and scalability.</p>
+        <p>Additionally, we introduced real-time features such as a live news ticker and enhanced URL content extraction. This phase marked the transition from a working prototype to a user-ready application.</p>
+    </div>
+
+    <div class="post older">
+        <h3>🔹 Project Review 1: Building the Core Foundation</h3>
+        <small>PUBLISHED: 1 MONTH AGO</small>
+        <p style="margin-bottom: 10px;">For our initial project review, we focused on establishing the core functionality of TruthLens Intelligence. This phase involved dataset acquisition and preprocessing, where we worked with real and fake news data to prepare it for training.</p>
+        <p style="margin-bottom: 10px;">We successfully developed and executed our machine learning pipeline using train_model.py, achieving high accuracy in detecting misinformation. Alongside this, we built a basic Flask backend with a working /api/predict endpoint, enabling real-time fake news prediction.</p>
+        <p>This phase laid the technical foundation of our system, ensuring that both the AI model and backend services were functional and ready for integration.</p>
+    </div>
+
+    <a href="/" class="back">Return to Dashboard</a>
+  </div>
+</body>
+</html>

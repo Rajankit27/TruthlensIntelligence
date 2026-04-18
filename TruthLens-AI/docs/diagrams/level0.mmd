@@ -1,0 +1,14 @@
+graph TD
+    %% Configuration for High Resolution & Background
+    classDef entity fill:#e2e8f0,stroke:#64748b,stroke-width:2px,color:#0f172a,border-radius:4px
+    classDef process fill:#dbeafe,stroke:#3b82f6,stroke-width:2px,color:#1e3a8a
+    
+    User["External Entity: User"]:::entity
+    Admin["External Entity: Admin"]:::entity
+    System(("0.0<br/>TruthLens Intelligence System<br/>(AI Fake News Detector)")):::process
+
+    User -- "News Text / URL Input" --> System
+    System -- "Prediction Result<br/>(Fake/Real + Confidence)" --> User
+    
+    Admin -- "Dispute Resolution &<br/>Retrain Execution Commands" --> System
+    System -- "Logs, Analytics &<br/>Model State Feedback" --> Admin

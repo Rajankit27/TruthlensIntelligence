@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How It Works - TruthLens Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #fafbfc; color: #111827; margin: 0; padding: 40px 20px; line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 60px 40px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
+    h1 { font-size: 2.2rem; color: #1e293b; margin-bottom: 24px; font-weight: 800; letter-spacing: -0.02em; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
+    h2 { font-size: 1.3rem; color: #3b82f6; margin-top: 30px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    p { margin-bottom: 20px; color: #4b5563; font-size: 1.05rem; }
+    .back { display: inline-block; text-decoration: none; color: white; background: #3b82f6; font-weight: 600; padding: 12px 24px; border-radius: 8px; transition: 0.2s; margin-top: 20px; }
+    .back:hover { background: #2563eb; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+    .badge { background: #e0f2fe; color: #0284c7; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>How TruthLens Works</h1>
+    <p>TruthLens Intelligence utilizes a complex, multi-layered pipeline to analyze raw data and determine its journalistic integrity.</p>
+    
+    <h2><span class="badge">Step 1</span> Data Ingestion & Extraction</h2>
+    <p>Users can submit either direct text or a news URL. If a URL is provided, our custom Python scrapers bypass boilerplate clutter, ads, and navigation to extract the core HTML text automatically.</p>
+
+    <h2><span class="badge">Step 2</span> NLP Vectorization</h2>
+    <p>The extracted text is forced through an aggressive pre-processing tokenizer—removing stop words, isolating punctuation, and reducing words to their root stems. It is then encoded by our <strong>TF-IDF Vectorizer</strong> into mathematical arrays.</p>
+    
+    <h2><span class="badge">Step 3</span> Machine Learning Inference</h2>
+    <p>The matrix is passed into a <strong>Logistic Regression Model</strong> wrapped within a <em>Calibrated Classifier</em>. The system analyzes underlying semantic structures, emotional manipulation, and linguistic nuances indicative of fabrication, rather than just simple keywords.</p>
+
+    <h2><span class="badge">Step 4</span> Domain Reputation Heuristics</h2>
+    <p>To avoid severe false positives against trusted sources, the text and URL are cross-referenced against an internal dynamic whitelist of certified global news networks (BBC, Reuters, Times of India). Verified domains receive a strict probability offset.</p>
+
+    <h2><span class="badge">Step 5</span> Explainable AI (XAI) Output</h2>
+    <p>Finally, we calculate the top contributing feature coefficients to show you explicitly <em>which words</em> influenced the model to lean "FAKE" or "REAL", ensuring total insight transparency in the UI.</p>
+    
+    <a href="/" class="back">Return to Dashboard</a>
+  </div>
+</body>
+</html>

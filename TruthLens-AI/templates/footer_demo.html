@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TruthLens — Footer Exact Layout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f3f4f6;
+      /* Outer background to show footer contrast */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .page-demo {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+    }
+
+    /* ════════════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════════════ */
+    /* Light Modern Background */
+    .site-footer {
+      background: #ffffff;
+      color: #4b5563;
+      border-top: 1px solid #e5e7eb;
+      font-size: 0.9rem;
+    }
+
+    /* Outer Wrapper */
+    .footer-wrapper {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 60px 40px 20px 40px;
+    }
+
+    /* Main Grid: 
+       Col 1: Brand (auto wide)
+       Divider (border via CSS)
+       Col 2: Quick Links
+       Col 3: Resources
+       Col 4: Company
+       Col 5: Legal & Social
+    */
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 60px;
+      padding-bottom: 50px;
+    }
+
+    /* ── 1. Brand Column ── */
+    .brand-col {
+      flex-shrink: 0;
+      width: 320px;
+      border-right: 1px solid #e5e7eb;
+      /* The vertical line */
+      padding-right: 40px;
+    }
+
+    /* Logo Area */
+    .brand-logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .lens-icon {
+      width: 44px;
+      height: 44px;
+      fill: none;
+      stroke: #3b82f6;
+      stroke-width: 2;
+    }
+
+    .lens-icon circle.inner {
+      fill: rgba(59, 130, 246, 0.1);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #6b7280;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* Contact List */
+    .contact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.9rem;
+      color: #4b5563;
+    }
+
+    .contact-icon {
+      width: 16px;
+      height: 16px;
+      fill: #3b82f6;
+      /* Blue icon color like the reference */
+      flex-shrink: 0;
+    }
+
+    .contact-item a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .contact-item a:hover {
+      color: #111827;
+    }
+
+    /* ── Middle / Right Columns Wrapper ── */
+    .links-container {
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    /* ── Standard Column ── */
+    .nav-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-col h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 24px;
+    }
+
+    /* Nav Links List */
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Small indicator icons acting as bullets */
+    .nav-icon {
+      width: 14px;
+      height: 14px;
+      fill: #3b82f6;
+      /* Light blue icons from the image */
+      opacity: 0.9;
+    }
+
+    .nav-item a {
+      text-decoration: none;
+      color: #4b5563;
+      /* Lighter grey for links */
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .nav-item a:hover {
+      color: #111827;
+    }
+
+    /* ── Right Column (Legal & Social) ── */
+    .legal-col {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      /* Gap between top text links and icons */
+    }
+
+    .legal-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .legal-list a {
+      text-decoration: none;
+      color: #4b5563;
+      font-size: 0.9rem;
+    }
+
+    .legal-list a:hover {
+      color: #111827;
+    }
+
+    /* Social Row */
+    .social-row {
+      display: flex;
+      gap: 12px;
+      margin-top: auto;
+      /* push to bottom to roughly align with other bottom items if needed */
+    }
+
+    .soc-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .soc-circle:hover {
+      opacity: 0.85;
+    }
+
+    .soc-circle svg {
+      width: 14px;
+      height: 14px;
+      fill: #ffffff;
+    }
+
+    /* Matching original colors from image exactly */
+    .soc-fb {
+      background-color: #3b5998;
+    }
+
+    .soc-tw {
+      background-color: #1da1f2;
+    }
+
+    .soc-in {
+      background-color: #0077b5;
+    }
+
+    .soc-yt {
+      background-color: #ff0000;
+    }
+
+    /* ── Bottom Section ── */
+    .footer-bottom {
+      border-top: 1px solid #e5e7eb;
+      padding-top: 24px;
+      text-align: left;
+      /* Image has it left aligned under the line */
+    }
+
+    .copyright {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .footer-top {
+        flex-wrap: wrap;
+        gap: 40px;
+      }
+
+      .brand-col {
+        width: 100%;
+        border-right: none;
+        padding-right: 0;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 30px;
+      }
+
+      .links-container {
+        flex-wrap: wrap;
+      }
+
+      .nav-col {
+        min-width: 150px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav-col {
+        width: 100%;
+      }
+
+      .legal-col {
+        width: 100%;
+      }
+
+      .footer-wrapper {
+        padding: 40px 20px;
+      }
+    }
+  </style>
+  <!-- Tailwind CSS Setup -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: {
+        preflight: false
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <div class="page-demo">Page Content Here</div>
+
+  <footer class="site-footer">
+    <div class="footer-wrapper">
+
+      <!-- Top Section with Columns -->
+      <div class="footer-top">
+
+        <!-- 1. Brand & Contact (Left) -->
+        <div class="brand-col">
+          <div class="brand-logo-area">
+            <!-- Icon resembling the magnifying glass from the original image -->
+            <svg class="lens-icon" viewBox="0 0 24 24">
+              <circle cx="10" cy="10" r="7" class="inner"></circle>
+              <line x1="15" y1="15" x2="21" y2="21"></line>
+            </svg>
+            <div class="brand-text">
+              <span class="brand-title">TruthLens</span>
+              <span class="brand-subtitle">Intelligence</span>
+            </div>
+          </div>
+
+          <ul class="contact-list">
+            <li class="contact-item">
+              <!-- Phone Icon -->
+              <svg class="contact-icon" viewBox="0 0 24 24">
+                <path
+                  d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.02 3.18 2 2 0 012 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.9a16 16 0 006.29 6.29l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
+              </svg>
+              <a href="tel:+12345678900">+1 (234) 567-8900</a>
+            </li>
+            <li class="contact-item">
+              <!-- Email Icon -->
+              <svg class="contact-icon" viewBox="0 0 24 24">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+              <a href="mailto:support@truthlens.com">support@truthlens.com</a>
+            </li>
+            <li class="contact-item">
+              <!-- Address Icon -->
+              <svg class="contact-icon" viewBox="0 0 24 24">
+                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" />
+                <circle cx="12" cy="10" r="3" fill="#3b82f6" />
+              </svg>
+              <span>1234 Intelligence Blvd,<br>Suite 567, Tech City, CA 902</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2. The Rest of the Links -->
+        <div class="links-container">
+
+          <!-- Column 1: Quick Links -->
+          <div class="nav-col">
+            <h4>Quick Links</h4>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <!-- Dashboard Icon (square window) -->
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="M3 9h18M9 21V9" />
+                </svg>
+                <a href="#">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <!-- Analyze Icon (pulse/chart) -->
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" fill="none" stroke="#3b82f6" stroke-width="2" />
+                </svg>
+                <a href="#">Analyze</a>
+              </li>
+              <li class="nav-item">
+                <!-- Log Icon -->
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                  <polyline points="14 2 14 8 20 8" fill="none" stroke="#3b82f6" stroke-width="2" />
+                  <line x1="16" y1="13" x2="8" y2="13" stroke="#3b82f6" stroke-width="2" />
+                  <line x1="16" y1="17" x2="8" y2="17" stroke="#3b82f6" stroke-width="2" />
+                </svg>
+                <a href="#">Intelligence Log</a>
+              </li>
+              <li class="nav-item">
+                <!-- Admin Icon (shield/cog) -->
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="#3b82f6" stroke-width="2" />
+                </svg>
+                <a href="#">Admin Console</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 2: Resources -->
+          <div class="nav-col">
+            <h4>Resources</h4>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" fill="none" stroke="#3b82f6" stroke-width="2" />
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" fill="none" stroke="#3b82f6"
+                    stroke-width="2" />
+                </svg>
+                <a href="#">Blog</a>
+              </li>
+              <li class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="#3b82f6" stroke-width="2" />
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" fill="none" stroke="#3b82f6" stroke-width="2" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" stroke="#3b82f6" stroke-width="3" />
+                </svg>
+                <a href="#">FAQ</a>
+              </li>
+              <li class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"
+                    fill="none" stroke="#3b82f6" stroke-width="2" />
+                </svg>
+                <a href="#">Help Center</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Company -->
+          <div class="nav-col">
+            <h4>Company</h4>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                  <circle cx="12" cy="7" r="4" fill="none" stroke="#3b82f6" stroke-width="2" />
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="none" stroke="#3b82f6" stroke-width="2" />
+                </svg>
+                <a href="#">About Us</a>
+              </li>
+              <li class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="#3b82f6" stroke-width="2" />
+                  <polyline points="12 6 12 12 16 14" fill="none" stroke="#3b82f6" stroke-width="2" />
+                </svg>
+                <a href="#">How It Works</a>
+              </li>
+              <li class="nav-item">
+                <svg class="nav-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.02 3.18 2 2 0 012 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.9a16 16 0 006.29 6.29l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"
+                    fill="none" stroke="#3b82f6" stroke-width="2" />
+                </svg>
+                <a href="#">Contact Us</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 4: Legal / Socials -->
+          <div class="legal-col">
+            <ul class="legal-list">
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+            </ul>
+
+            <div class="social-row">
+              <a href="#" class="soc-circle soc-fb" aria-label="Facebook">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+              </a>
+              <a href="#" class="soc-circle soc-tw" aria-label="Twitter">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+              <a href="#" class="soc-circle soc-in" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                </svg>
+              </a>
+              <a href="#" class="soc-circle soc-yt" aria-label="YouTube">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Section -->
+      <div class="footer-bottom">
+        <span class="copyright">&copy; 2026 TruthLens Intelligence. All rights reserved.</span>
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+
+</html>

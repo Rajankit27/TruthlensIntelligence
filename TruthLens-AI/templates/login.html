@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruthLens Intelligence | Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .auth-card {
+            background: var(--card-bg, rgba(255, 255, 255, 0.04));
+            border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            max-width: 420px;
+            margin: 2rem auto;
+            backdrop-filter: blur(20px);
+        }
+
+        .auth-card h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            background: linear-gradient(135deg, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .auth-card p.auth-sub {
+            font-size: 0.85rem;
+            opacity: 0.55;
+            margin-bottom: 1.8rem;
+        }
+
+        .auth-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .auth-field label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .auth-field input {
+            background: var(--input-bg, rgba(255, 255, 255, 0.06));
+            border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .auth-field input:focus {
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 0.85rem;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff;
+            transition: opacity 0.2s, transform 0.1s;
+            margin-top: 0.5rem;
+        }
+
+        .auth-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .auth-btn:active {
+            transform: translateY(0);
+        }
+
+        .auth-msg {
+            margin-top: 1rem;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            display: none;
+        }
+
+        .auth-msg.success {
+            background: rgba(34, 197, 94, 0.12);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .auth-msg.error {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 1.4rem;
+            font-size: 0.85rem;
+            opacity: 0.6;
+        }
+
+        .auth-switch a {
+            color: #a78bfa;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .token-box {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            word-break: break-all;
+            display: none;
+            color: #a78bfa;
+        }
+
+        .auth-status-bar {
+            width: 100%;
+            padding: 8px 0;
+            font-size: 13px;
+            text-align: center;
+            color: white;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .header {
+            text-align: center;
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+        }
+
+        .header .title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .dark .header .subtitle {
+            color: #94a3b8;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .dark .footer {
+            color: #94a3b8;
+        }
+    </style>
+    <!-- Tailwind CSS Setup -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        corePlugins: {
+          preflight: false
+        }
+      }
+    </script>
+</head>
+
+<body>
+    <!-- Top Slim Status Bar -->
+    <div class="auth-status-bar">
+        🌍 TruthLens Intelligence Active • 🛡️ Secure Authentication • 🌀 JWT Protected
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <span id="theme-icon">🌙</span>
+    </button>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">TruthLens Intelligence</h1>
+            <p class="subtitle">Advanced AI-Powered Fake News Detection System</p>
+        </header>
+
+        <main>
+            <div class="auth-card">
+                <h2>🔐 Sign In</h2>
+                <p class="auth-sub">Enter your credentials to access TruthLens</p>
+
+                <div class="auth-field">
+                    <label for="username">USERNAME</label>
+                    <input type="text" id="username" placeholder="Enter your username" autocomplete="username" />
+                </div>
+                <div class="auth-field">
+                    <label for="password">PASSWORD</label>
+                    <input type="password" id="password" placeholder="Enter your password"
+                        autocomplete="current-password" />
+                </div>
+
+                <button class="auth-btn" id="login-btn">Login</button>
+
+                <div class="auth-msg" id="auth-msg"></div>
+
+                <div class="auth-switch">
+                    Don't have an account? <a href="/auth/register">Register here</a>
+                </div>
+                <div class="auth-switch" style="margin-top:0.6rem;">
+                    <a href="/">← Back to News Detector</a>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>⚡ TruthLens Intelligence &mdash; Advanced ML Pipeline &bull; Real-time Analysis</p>
+        </footer>
+    </div>
+
+    <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        const loginBtn = document.getElementById('login-btn');
+
+        loginBtn.addEventListener('click', async () => {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                showMsg('⚠️ Please fill in both fields.', 'error');
+                return;
+            }
+
+            // Loading state
+            loginBtn.disabled = true;
+            loginBtn.textContent = '⏳ Signing in...';
+
+            try {
+                const res = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+
+                if (res.ok && data.token) {
+                    // Store token securely — never shown in UI
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('role', data.role || 'user');
+
+                    showMsg('✅ Login successful! Redirecting...', 'success');
+                    loginBtn.textContent = '✅ Signed In';
+
+                    // Redirect after short delay
+                    setTimeout(() => { window.location.href = '/'; }, 1500);
+                } else {
+                    showMsg('❌ ' + (data.error || 'Invalid credentials. Please try again.'), 'error');
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Login';
+                }
+            } catch (e) {
+                showMsg('❌ Network error. Is the server running?', 'error');
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }
+        });
+
+        function showMsg(text, type) {
+            const el = document.getElementById('auth-msg');
+            el.textContent = text;
+            el.className = 'auth-msg ' + type;
+            el.style.display = 'block';
+        }
+
+        // Allow Enter key
+        ['username', 'password'].forEach(id => {
+            document.getElementById(id).addEventListener('keydown', e => {
+                if (e.key === 'Enter') loginBtn.click();
+            });
+        });
+
+        // Theme toggle (mirror from main.js)
+        const btn = document.getElementById('theme-toggle');
+        const icon = document.getElementById('theme-icon');
+        const saved = localStorage.getItem('theme');
+        if (saved === 'light') { document.documentElement.setAttribute('data-theme', 'light'); icon.textContent = '☀️'; }
+        btn.addEventListener('click', () => {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+            icon.textContent = isLight ? '🌙' : '☀️';
+            localStorage.setItem('theme', isLight ? 'dark' : 'light');
+        });
+    </script>
+</body>
+
+</html>
