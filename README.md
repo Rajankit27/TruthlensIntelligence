@@ -38,8 +38,7 @@ The system utilizes machine learning models to analyze linguistic patterns, sour
 
 ## 📊 Dataset
 
-> [!IMPORTANT]
-> The dataset is **not included** in this repository due to size limitations and GitHub's file size policy.
+⚠️ **Note**: Dataset is not included in this repository due to GitHub file size limitations.
 
 Please download the **Fake and Real News Dataset** from Kaggle:
 👉 [Download Dataset on Kaggle](https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset)
