@@ -102,15 +102,14 @@ TruthLens-AI/
 ## 📸 Screenshots
 
 ### Dashboard UI
-<img src="https://raw.githubusercontent.com/Rajankit27/TruthlensIntelligence/main/TruthLens-AI/screenshots/dashboard1.png" width="500"/>
-<img src="https://raw.githubusercontent.com/Rajankit27/TruthlensIntelligence/main/TruthLens-AI/screenshots/dashboard2.png" width="500"/>
+<img src="TruthLens-AI/screenshots/dashboard1.png" width="500"/>
+<img src="TruthLens-AI/screenshots/dashboard2.png" width="500"/>
 
 ### Analysis Result
-<img src="https://raw.githubusercontent.com/Rajankit27/TruthlensIntelligence/main/TruthLens-AI/screenshots/real-news.png" width="500"/>
+<img src="TruthLens-AI/screenshots/real-news.png" width="500"/>
 
 ### Admin Panel Overview
-<img src="https://raw.githubusercontent.com/Rajankit27/TruthlensIntelligence/main/TruthLens-AI/screenshots/admin-dashboard.png" width="500"/>
-
+<img src="TruthLens-AI/screenshots/admin-dashboard.png" width="500"/>
 ## 🔮 Future Improvements
 
 - **Real-time API Integration**: Connect with news APIs (GNews, NewsAPI) for broader live verification.
