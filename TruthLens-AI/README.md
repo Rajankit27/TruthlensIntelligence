@@ -46,17 +46,17 @@ The system is backed by a **Logistic Regression classifier** wrapped in a **Cali
 
 ### Dashboard UI
 <p align="center">
-  <img src="screenshots/user dashboard 1.png" width="800" alt="Dashboard UI">
+  <img src="screenshots/dashboard1.png" width="800" alt="Dashboard UI">
 </p>
 
 ### Analysis Result
 <p align="center">
-  <img src="screenshots/url analysis result.png" width="800" alt="Analysis Result">
+  <img src="screenshots/analysis-result.png" width="800" alt="Analysis Result">
 </p>
 
 ### Admin Panel Overview
 <p align="center">
-  <img src="screenshots/admin dashboard.png" width="800" alt="Admin Panel Overview">
+  <img src="screenshots/admin-dashboard.png" width="800" alt="Admin Panel Overview">
 </p>
 
 ---
@@ -64,32 +64,32 @@ The system is backed by a **Logistic Regression classifier** wrapped in a **Cali
 ### 🖼️ Full Project Gallery
 
 <p align="center">
-  <img src="screenshots/user dashboard with dark mode.png" width="500" alt="User Dashboard Dark Mode">
+  <img src="screenshots/dashboard-dark.png" width="500" alt="User Dashboard Dark Mode">
   <br><b>User Dashboard (Dark Mode)</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/user dashboard2.png" width="500" alt="User Dashboard History Feed">
+  <img src="screenshots/dashboard2.png" width="500" alt="User Dashboard History Feed">
   <br><b>User Dashboard (History & Feed)</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/real news.png" width="500" alt="Real News Analysis">
+  <img src="screenshots/real-news.png" width="500" alt="Real News Analysis">
   <br><b>Real News Analysis</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/fake news.png" width="500" alt="Fake News Analysis">
+  <img src="screenshots/fake-news.png" width="500" alt="Fake News Analysis">
   <br><b>Fake News Analysis</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/user input.png" width="500" alt="User Input Section">
+  <img src="screenshots/user-input.png" width="500" alt="User Input Section">
   <br><b>User Input Section</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/feedback dispute system.png" width="500" alt="Dispute Submission">
+  <img src="screenshots/feedback-dispute.png" width="500" alt="Dispute Submission">
   <br><b>Dispute Submission System</b>
 </p>
 
@@ -104,32 +104,32 @@ The system is backed by a **Logistic Regression classifier** wrapped in a **Cali
 </p>
 
 <p align="center">
-  <img src="screenshots/user footer.png" width="500" alt="Website Footer">
+  <img src="screenshots/footer.png" width="500" alt="Website Footer">
   <br><b>Website Footer & Links</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/admin login.png" width="500" alt="Admin Login">
+  <img src="screenshots/admin-login.png" width="500" alt="Admin Login">
   <br><b>Admin Login Page</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/user management admin console.png" width="500" alt="Admin User Management">
+  <img src="screenshots/user-management.png" width="500" alt="Admin User Management">
   <br><b>Admin User Management</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/feedback management system.png" width="500" alt="Admin Dispute Management">
+  <img src="screenshots/feedback-management.png" width="500" alt="Admin Dispute Management">
   <br><b>Admin Dispute Management</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/model retraining admin.png" width="500" alt="Admin ML Retraining">
+  <img src="screenshots/model-retraining.png" width="500" alt="Admin ML Retraining">
   <br><b>Admin ML Retraining Pipeline</b>
 </p>
 
 <p align="center">
-  <img src="screenshots/dataset kaggle.png" width="500" alt="Training Dataset Overview">
+  <img src="screenshots/dataset-kaggle.png" width="500" alt="Training Dataset Overview">
   <br><b>Training Dataset Overview</b>
 </p>
 
