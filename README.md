@@ -102,15 +102,14 @@ TruthLens-AI/
 ## 📸 Screenshots
 
 ### Dashboard UI
-<img src="screenshots/user%20dashboard%201.png" width="500"/>
-<img src="screenshots/user%20dashboard2.png" width="500"/>
+<img src="screenshots/dashboard1.png" width="500"/>
+<img src="screenshots/dashboard2.png" width="500"/>
 
 ### Analysis Result
-<img src="screenshots/real%20news.png" width="500"/>
+<img src="screenshots/real-news.png" width="500"/>
 
 ### Admin Panel Overview
-<img src="screenshots/admin%20dashboard.png" width="500"/>
-
+<img src="screenshots/admin-dashboard.png" width="500"/>
 ---
 
 ## 🔮 Future Improvements
