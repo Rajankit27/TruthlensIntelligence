@@ -102,15 +102,14 @@ TruthLens-AI/
 ## 📸 Screenshots
 
 ### Dashboard UI
-<img src="screenshots/dashboard1.png" width="500"/>
-<img src="screenshots/dashboard2.png" width="500"/>
+<img src="https://raw.githubusercontent.com/<your-username>/<repo-name>/main/screenshots/dashboard1.png" width="500"/>
+<img src="https://raw.githubusercontent.com/<your-username>/<repo-name>/main/screenshots/dashboard2.png" width="500"/>
 
 ### Analysis Result
-<img src="screenshots/real-news.png" width="500"/>
+<img src="https://raw.githubusercontent.com/<your-username>/<repo-name>/main/screenshots/real-news.png" width="500"/>
 
 ### Admin Panel Overview
-<img src="screenshots/admin-dashboard.png" width="500"/>
----
+<img src="https://raw.githubusercontent.com/<your-username>/<repo-name>/main/screenshots/admin-dashboard.png" width="500"/>
 
 ## 🔮 Future Improvements
 
