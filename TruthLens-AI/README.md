@@ -6,26 +6,26 @@
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Team Roles](#team-roles)
-- [Key Features](#key-features)
-- [Architecture](#architecture)
-- [Data Flow Diagrams (DFD)](#data-flow-diagrams-dfd)
-- [Project Structure](#project-structure)
-- [Tech Stack](#tech-stack)
-- [ML Model Details](#ml-model-details)
-- [Setup & Installation](#setup--installation)
-- [Running the Application](#running-the-application)
-- [API Reference](#api-reference)
-- [Admin Dashboard](#admin-dashboard)
-- [Public Website Pages](#public-website-pages)
-- [Frontend UI Features](#frontend-ui-features)
-- [Testing](#testing)
-- [Changelog / Latest Changes](#changelog--latest-changes)
+- [📝 Overview](#-overview)
+- [📸 Screenshots Overview](#-screenshots-overview)
+- [👥 Team Roles](#-team-roles)
+- [✨ Key Features](#-key-features)
+- [🏗️ Architecture](#-architecture)
+- [📊 Data Flow Diagrams (DFD)](#-data-flow-diagrams-dfd)
+- [📂 Project Structure](#-project-structure)
+- [🛠️ Tech Stack](#-tech-stack)
+- [🧠 ML Model Details](#-ml-model-details)
+- [🚀 How to Run](#-how-to-run)
+- [🔌 API Reference](#-api-reference)
+- [🛡️ Admin Dashboard](#-admin-dashboard)
+- [🌐 Public Website Pages](#-public-website-pages)
+- [🎨 Frontend UI Features](#-frontend-ui-features)
+- [🧪 Testing](#-testing)
+- [📜 Changelog / Latest Changes](#-changelog--latest-changes)
 
 ---
 
-## Overview
+## 📝 Overview
 
 **TruthLens Intelligence** is a production-grade, full-stack fake news detection platform built for academic demonstration (Review 2). Users can submit raw news text or a news URL for analysis, receiving a **REAL / FAKE verdict** with a calibrated confidence score and **Explainable AI (XAI)** word-level contributions highlighting which terms most influenced the decision.
 
@@ -40,7 +40,102 @@ The system is backed by a **Logistic Regression classifier** wrapped in a **Cali
 
 ---
 
-## Team Roles
+## 📸 Screenshots Overview
+
+*(Visual overview of the TruthLens Intelligence platform)*
+
+### Dashboard UI
+<p align="center">
+  <img src="screenshots/user dashboard 1.png" width="800" alt="Dashboard UI">
+</p>
+
+### Analysis Result
+<p align="center">
+  <img src="screenshots/url analysis result.png" width="800" alt="Analysis Result">
+</p>
+
+### Admin Panel Overview
+<p align="center">
+  <img src="screenshots/admin dashboard.png" width="800" alt="Admin Panel Overview">
+</p>
+
+---
+
+### 🖼️ Full Project Gallery
+
+<p align="center">
+  <img src="screenshots/user dashboard with dark mode.png" width="500" alt="User Dashboard Dark Mode">
+  <br><b>User Dashboard (Dark Mode)</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/user dashboard2.png" width="500" alt="User Dashboard History Feed">
+  <br><b>User Dashboard (History & Feed)</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/real news.png" width="500" alt="Real News Analysis">
+  <br><b>Real News Analysis</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/fake news.png" width="500" alt="Fake News Analysis">
+  <br><b>Fake News Analysis</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/user input.png" width="500" alt="User Input Section">
+  <br><b>User Input Section</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/feedback dispute system.png" width="500" alt="Dispute Submission">
+  <br><b>Dispute Submission System</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/login.png" width="500" alt="User Login">
+  <br><b>User Login Page</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/register.png" width="500" alt="User Registration">
+  <br><b>User Registration Page</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/user footer.png" width="500" alt="Website Footer">
+  <br><b>Website Footer & Links</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/admin login.png" width="500" alt="Admin Login">
+  <br><b>Admin Login Page</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/user management admin console.png" width="500" alt="Admin User Management">
+  <br><b>Admin User Management</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/feedback management system.png" width="500" alt="Admin Dispute Management">
+  <br><b>Admin Dispute Management</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/model retraining admin.png" width="500" alt="Admin ML Retraining">
+  <br><b>Admin ML Retraining Pipeline</b>
+</p>
+
+<p align="center">
+  <img src="screenshots/dataset kaggle.png" width="500" alt="Training Dataset Overview">
+  <br><b>Training Dataset Overview</b>
+</p>
+
+---
+
+## 👥 Team Roles
 
 | Member | Role | Responsibilities |
 |--------|------|-----------------|
@@ -51,7 +146,7 @@ The system is backed by a **Logistic Regression classifier** wrapped in a **Cali
 
 ---
 
-## Key Features
+## ✨ Key Features
 
 ### 🔍 Core Detection Engine
 - **Text Analysis** — Paste any news article for instant REAL/FAKE classification
@@ -112,7 +207,7 @@ washington post, bloomberg, al jazeera, timesofindia, hindustantimes
 
 ---
 
-## Architecture
+## 🏗️ Architecture
 
 ```
 Browser (User / Admin)
@@ -159,7 +254,7 @@ Browser (User / Admin)
 
 ---
 
-## Data Flow Diagrams (DFD)
+## 📊 Data Flow Diagrams (DFD)
 
 ### Level 0 — Context Diagram
 
@@ -190,7 +285,7 @@ Full Mermaid DFD diagrams are in [`docs/TruthLens_DFD_Diagrams.md`](docs/TruthLe
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 TruthLens-AI/
@@ -263,7 +358,7 @@ TruthLens-AI/
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 | Layer | Technology | Details |
 |-------|-----------|---------|
@@ -281,7 +376,7 @@ TruthLens-AI/
 
 ---
 
-## ML Model Details
+## 🧠 ML Model Details
 
 ### Algorithm & Pipeline
 
@@ -327,77 +422,41 @@ Steps performed:
 
 ---
 
-## Setup & Installation
+## 🚀 How to Run
 
-### 1. Clone & Create Virtual Environment
+Follow these simple steps to set up and run TruthLens Intelligence locally:
 
-```bash
-git clone <repo-url>
-cd TruthLens-AI
-python -m venv venv
-venv\Scripts\activate           # Windows
-# source venv/bin/activate      # macOS / Linux
-```
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/Rajankit27/TruthlensIntelligence.git
+   cd TruthLens-AI
+   ```
 
-### 2. Install Dependencies
+2. **Set Up Environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
 
-```bash
-pip install -r requirements.txt
-```
+3. **Configure Settings (Optional)**
+   Create a `.env` file for MongoDB/JWT (defaults are provided for local dev).
 
-**Dependencies:**
-```
-scikit-learn>=1.3.0
-nltk>=3.8.1
-pandas>=2.0.0
-numpy>=1.24.0
-flask>=3.0.0
-PyJWT>=2.0.0
-pymongo>=4.0.0
-requests>=2.31.0
-beautifulsoup4>=4.12.0
-```
+4. **Train the ML Model**
+   ```bash
+   python ml/train_model.py
+   ```
+   *This downloads the dataset and prepares the artifacts.*
 
-### 3. Configure Environment
-
-Create a `.env` file in the project root (optional — defaults work for local dev):
-
-```env
-MONGO_URI=mongodb://localhost:27017/
-JWT_SECRET=your-strong-secret-key
-```
-
-> **MongoDB is optional.** If unavailable, the app degrades gracefully: history, disputes, and admin stats will be disabled, but text/URL analysis, authentication, and all other features remain fully functional.
-
-### 4. Train the Model
-
-```bash
-python ml/train_model.py
-```
-
-This auto-downloads the dataset if missing, trains the model, and saves `model.pkl`, `vectorizer.pkl`, `threshold.txt` to `artifacts/`.
+5. **Start the Application**
+   ```bash
+   python backend/app.py
+   ```
+   Open **http://localhost:5002** in your browser.
 
 ---
 
-## Running the Application
-
-```bash
-python backend/app.py
-```
-
-Open **http://localhost:5002** in your browser.
-
-> The server runs on port **5002** by default. The SQLite database and default admin account are auto-created on first run. The model is loaded lazily on the first request via `@app.before_request`.
-
-**Default Admin Credentials:**
-```
-Username: admin
-Password: admin
-```
-
----
-
-## API Reference
+## 🔌 API Reference
 
 All protected routes require an `Authorization: Bearer <token>` header obtained from `POST /auth/login`.
 
@@ -527,7 +586,7 @@ curl -X POST http://localhost:5002/dispute \
 
 ---
 
-## Admin Dashboard
+## 🛡️ Admin Dashboard
 
 Access the admin panel at **http://localhost:5002/admin**.
 
@@ -558,7 +617,7 @@ POST /admin/retrain
 
 ---
 
-## Public Website Pages
+## 🌐 Public Website Pages
 
 All pages follow the TruthLens brand design system (dark mode, glassmorphism, consistent nav/footer).
 
@@ -576,7 +635,7 @@ All pages follow the TruthLens brand design system (dark mode, glassmorphism, co
 
 ---
 
-## Frontend UI Features
+## 🎨 Frontend UI Features
 
 The frontend is built with **Vanilla HTML/CSS/JavaScript** — no frameworks. Key UI components:
 
@@ -607,7 +666,7 @@ The frontend is built with **Vanilla HTML/CSS/JavaScript** — no frameworks. Ke
 
 ---
 
-## Testing
+## 🧪 Testing
 
 ### Unit Tests
 
@@ -636,7 +695,7 @@ A curated list of REAL and FAKE news samples for demo testing is in [`docs/SAMPL
 
 ---
 
-## Changelog / Latest Changes
+## 📜 Changelog / Latest Changes
 
 ### Review 2 (Latest) — April 2026
 
