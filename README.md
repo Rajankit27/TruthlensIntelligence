@@ -101,13 +101,15 @@ TruthLens-AI/
 
 ## 📸 Screenshots
 
-*(Screenshots will be added soon)*
-<!-- slide -->
-![Dashboard Placeholder](https://placehold.co/600x400?text=Dashboard+UI+Screenshot)
-<!-- slide -->
-![Analysis Result Placeholder](https://placehold.co/600x400?text=Analysis+Result+Display)
-<!-- slide -->
-![Admin Panel Placeholder](https://placehold.co/600x400?text=Admin+Panel+Overview)
+### Dashboard UI
+<img src="screenshots/user%20dashboard%201.png" width="500"/>
+<img src="screenshots/user%20dashboard2.png" width="500"/>
+
+### Analysis Result
+<img src="screenshots/real%20news.png" width="500"/>
+
+### Admin Panel Overview
+<img src="screenshots/admin%20dashboard.png" width="500"/>
 
 ---
 
