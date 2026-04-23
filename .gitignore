@@ -209,3 +209,5 @@ __marimo__/
 # Project Specific
 TruthLens-AI/data/
 *.csv
+*.db
+TruthLens-AI/Implementation_Code.txt

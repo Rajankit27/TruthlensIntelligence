@@ -428,7 +428,7 @@ Follow these simple steps to set up and run TruthLens Intelligence locally:
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/Rajankit27/TruthlensIntelligence.git
+   git clone <YOUR_CURRENT_REPOSITORY_URL>
    cd TruthLens-AI
    ```
 

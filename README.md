@@ -58,8 +58,8 @@ Follow these steps to set up the project locally:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Rajankit27/TruthlensIntelligence.git
-   cd TruthlensIntelligence
+   git clone <YOUR_CURRENT_REPOSITORY_URL>
+   cd TruthLens-AI
    ```
 
 2. **Install requirements**:
