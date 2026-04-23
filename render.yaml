@@ -4,7 +4,7 @@ services:
     env: python
     rootDirectory: TruthLens-AI
     buildCommand: "pip install -r requirements.txt && python ml/train_model.py"
-    startCommand: "gunicorn backend.app:app"
+    startCommand: "gunicorn backend.app:app --bind 0.0.0.0:$PORT"
     envVars:
       - key: MONGO_URI
         sync: false # Set your MongoDB Atlas URI in Render Dashboard
