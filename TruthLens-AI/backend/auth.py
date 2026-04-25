@@ -34,6 +34,16 @@ except Exception as e:
     print(f"Auth MongoDB Warning: {e}")
     users_col = None
 
+@auth_bp.route('/status', methods=['GET'])
+def auth_status():
+    if users_col is None:
+        return jsonify({"status": "error", "message": "MongoDB not connected"}), 500
+    try:
+        count = users_col.count_documents({})
+        return jsonify({"status": "ok", "user_count": count}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
 @auth_bp.route('/register', methods=['GET'])
 def register_page():
     return render_template('register.html')
