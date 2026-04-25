@@ -7,7 +7,7 @@ services:
     startCommand: "gunicorn backend.app:app --bind 0.0.0.0:$PORT"
     envVars:
       - key: MONGO_URI
-        sync: false # Set your MongoDB Atlas URI in Render Dashboard
+        sync: false
       - key: JWT_SECRET
         generateValue: true
       - key: PYTHON_VERSION
