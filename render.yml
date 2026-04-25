@@ -2,7 +2,7 @@ services:
   - type: web
     name: truthlens-intelligence-live
     env: python
-    rootDirectory: TruthLens-AI
+    rootDir: TruthLens-AI
     buildCommand: "pip install -r requirements.txt && python ml/train_model.py"
     startCommand: "gunicorn backend.app:app --bind 0.0.0.0:$PORT"
     envVars:
