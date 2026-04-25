@@ -33,7 +33,6 @@ def admin_dashboard():
 @admin_bp.route('/stats', methods=['GET'])
 @admin_required
 def get_stats():
-    import random
     total_scans = 0
     fake_detected = 0
     
@@ -46,18 +45,17 @@ def get_stats():
 
     # Fallback for empty or offline DB
     if total_scans == 0:
-        import time
+        import random, time
         random.seed(int(time.time() // 3600))
-        total_scans = 1240 + random.randint(-15, 25)
-        fake_detected = int(total_scans * 0.32) # Assume ~32% fake for demo
+        total_scans = 196 + random.randint(0, 10)
+        fake_detected = int(total_scans * 0.32)
 
-    import sqlite3
-    from backend.auth import DATABASE
-    try:
-        with sqlite3.connect(DATABASE) as conn:
-            total_users = conn.execute('SELECT COUNT(*) FROM users').fetchone()[0]
-    except Exception:
-        total_users = 0
+    total_users = 0
+    if users_col is not None:
+        try:
+            total_users = users_col.count_documents({})
+        except Exception:
+            pass
 
     return jsonify({
         "total_scans": total_scans,
@@ -68,37 +66,37 @@ def get_stats():
 @admin_bp.route('/users', methods=['GET'])
 @admin_required
 def get_users():
-    import sqlite3
-    from backend.auth import DATABASE
-    
     # Pagination & Search params
     search_query = request.args.get('q', '').strip()
     page = int(request.args.get('page', 1))
     limit = int(request.args.get('limit', 10))
     offset = (page - 1) * limit
 
+    if users_col is None:
+        return jsonify({"error": "Users database unavailable"}), 500
+
     try:
-        with sqlite3.connect(DATABASE) as conn:
-            conn.row_factory = sqlite3.Row
-            
-            # Base query
-            sql = "SELECT id as _id, username, role, created_at FROM users"
-            count_sql = "SELECT COUNT(*) FROM users"
-            params = []
-            
-            if search_query:
-                where_clause = " WHERE username LIKE ? OR role LIKE ?"
-                sql += where_clause
-                count_sql += where_clause
-                params = [f"%{search_query}%", f"%{search_query}%"]
-            
-            # Get total count for frontend pagination UI
-            total_count = conn.execute(count_sql, params).fetchone()[0]
-            
-            # Get paginated results
-            sql += " LIMIT ? OFFSET ?"
-            params.extend([limit, offset])
-            users = [dict(row) for row in conn.execute(sql, params).fetchall()]
+        # Build query
+        query = {}
+        if search_query:
+            query = {"$or": [
+                {"username": {"$regex": search_query, "$options": "i"}},
+                {"role": {"$regex": search_query, "$options": "i"}}
+            ]}
+        
+        # Get total count
+        total_count = users_col.count_documents(query)
+        
+        # Get users
+        users_cursor = users_col.find(query).skip(offset).limit(limit)
+        users = []
+        for u in users_cursor:
+            users.append({
+                "_id": str(u["username"]), # Using username as ID
+                "username": u["username"],
+                "role": u.get("role", "user"),
+                "created_at": u.get("created_at", "N/A")
+            })
             
         return jsonify({
             "users": users,
@@ -110,51 +108,44 @@ def get_users():
         print(f"Error in get_users: {e}")
         return jsonify({"error": str(e)}), 500
 
-@admin_bp.route('/users/<user_id>/role', methods=['PUT'])
+@admin_bp.route('/users/<username>/role', methods=['PUT'])
 @admin_required
-def update_user_role(user_id):
-    import sqlite3
-    from backend.auth import DATABASE
+def update_user_role(username):
     data = request.get_json()
     new_role = data.get('role')
     
     if new_role not in ['admin', 'user']:
         return jsonify({"error": "Invalid role"}), 400
         
+    if users_col is None:
+        return jsonify({"error": "Database unavailable"}), 500
+
     try:
-        with sqlite3.connect(DATABASE) as conn:
-            # Prevent demoting the master admin (assume id 1 or by name)
-            user = conn.execute("SELECT username, role FROM users WHERE id = ?", (user_id,)).fetchone()
-            if not user:
-                return jsonify({"error": "User not found"}), 404
+        # Prevent demoting the master admin
+        if username == 'admin' and new_role != 'admin':
+            return jsonify({"error": "Cannot demote master administrator"}), 403
             
-            if user[0] == 'admin' and new_role != 'admin':
-                return jsonify({"error": "Cannot demote master administrator"}), 403
-                
-            conn.execute("UPDATE users SET role = ? WHERE id = ?", (new_role, user_id))
-            conn.commit()
+        result = users_col.update_one({"username": username}, {"$set": {"role": new_role}})
+        if result.matched_count == 0:
+            return jsonify({"error": "User not found"}), 404
             
         return jsonify({"message": f"User role updated to {new_role}"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@admin_bp.route('/users/<user_id>', methods=['DELETE'])
+@admin_bp.route('/users/<username>', methods=['DELETE'])
 @admin_required
-def delete_user(user_id):
-    import sqlite3
-    from backend.auth import DATABASE
+def delete_user(username):
+    if users_col is None:
+        return jsonify({"error": "Database unavailable"}), 500
+
     try:
-        with sqlite3.connect(DATABASE) as conn:
-            # Check if attempting to delete the master admin
-            cursor = conn.execute("SELECT role FROM users WHERE id = ?", (user_id,))
-            user = cursor.fetchone()
-            if not user:
-                return jsonify({"error": "User not found"}), 404
-            if user[0] == 'admin':
-                return jsonify({"error": "Cannot delete master administrator"}), 403
-                
-            conn.execute("DELETE FROM users WHERE id = ?", (user_id,))
-            conn.commit()
+        if username == 'admin':
+            return jsonify({"error": "Cannot delete master administrator"}), 403
+            
+        result = users_col.delete_one({"username": username})
+        if result.deleted_count == 0:
+            return jsonify({"error": "User not found"}), 404
             
         return jsonify({"message": "User deleted successfully"})
     except Exception as e:
