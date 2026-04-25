@@ -24,14 +24,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, precision_recall_curve, f1_score, roc_auc_score
 
 # Download required NLTK data (run once)
-# note: remove invalid/typo entries and include wordnet language data for lemmatizer
-NLTK_DATA = ["punkt", "stopwords", "wordnet", "omw-1.4", "averaged_perceptron_tagger"]
+NLTK_DATA = ["punkt", "punkt_tab", "stopwords", "wordnet", "omw-1.4", "averaged_perceptron_tagger"]
 for resource in NLTK_DATA:
     try:
-        nltk.download(resource, quiet=True)
-    except Exception:
-        # continue if a resource cannot be downloaded in the current environment
-        pass
+        print(f"Downloading NLTK resource: {resource}...")
+        nltk.download(resource)
+    except Exception as e:
+        print(f"Warning: Could not download {resource}: {e}")
 
 # Paths
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
