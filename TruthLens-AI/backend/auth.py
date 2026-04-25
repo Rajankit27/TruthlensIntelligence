@@ -1,8 +1,8 @@
-import sqlite3
 import jwt
 import datetime
 import os
-from flask import Blueprint, request, jsonify
+import pymongo
+from flask import Blueprint, request, jsonify, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from pathlib import Path
@@ -10,54 +10,29 @@ from pathlib import Path
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 SECRET_KEY = os.getenv('JWT_SECRET', 'super-secret-key-for-dev')
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-DATABASE = PROJECT_ROOT / "backend" / "auth.db"
-
-def get_db():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-def init_db():
-    try:
-        with get_db() as conn:
-            conn.execute('''
-                CREATE TABLE IF NOT EXISTS users (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    username TEXT UNIQUE NOT NULL,
-                    password_hash TEXT NOT NULL
-                )
-            ''')
-            # Add role column if missing from legacy db
-            try:
-                conn.execute('SELECT role FROM users LIMIT 1')
-            except sqlite3.OperationalError:
-                conn.execute('ALTER TABLE users ADD COLUMN role TEXT DEFAULT "user"')
-                
-            # Add created_at column if missing (Two-step migration for SQLite compatibility)
-            try:
-                conn.execute('SELECT created_at FROM users LIMIT 1')
-            except sqlite3.OperationalError:
-                # SQLite 3.x doesn't allow non-constant defaults like CURRENT_TIMESTAMP in ALTER TABLE
-                conn.execute('ALTER TABLE users ADD COLUMN created_at TEXT')
-                conn.execute("UPDATE users SET created_at = (DATETIME('now')) WHERE created_at IS NULL")
-                
-            # Ensure admin
-            cursor = conn.execute("SELECT id FROM users WHERE role = 'admin'")
-            if not cursor.fetchone():
-                conn.execute("INSERT OR IGNORE INTO users (username, password_hash, role) VALUES (?, ?, ?)",
-                             ("admin", generate_password_hash("admin"), "admin"))
-            conn.commit()
-    except Exception as e:
-        print(f"Warning: Failed to initialize SQLite Database: {e}")
-
-# Initialize DB when module is loaded
-init_db()
-
-from flask import Blueprint, request, jsonify, render_template
-
-# ... (skipped imports so it fits in my mental diff)
+# MongoDB Setup
+try:
+    mongo_client = pymongo.MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+    db = mongo_client["truthlens"]
+    users_col = db["users"]
+    
+    # Ensure indexes
+    users_col.create_index("username", unique=True)
+    
+    # Ensure default admin exists
+    admin_user = users_col.find_one({"username": "admin"})
+    if not admin_user:
+        users_col.insert_one({
+            "username": "admin",
+            "password_hash": generate_password_hash("admin"),
+            "role": "admin",
+            "created_at": datetime.datetime.utcnow().isoformat()
+        })
+except Exception as e:
+    print(f"Auth MongoDB Warning: {e}")
+    users_col = None
 
 @auth_bp.route('/register', methods=['GET'])
 def register_page():
@@ -75,23 +50,23 @@ def register():
 
     username = data['username']
     password = data['password']
-    
-    # We can default to 'user' for public registration
     role = data.get('role', 'user')
 
+    if users_col is None:
+        return jsonify({"error": "Database unavailable"}), 500
+
     try:
-        with get_db() as conn:
-            conn.execute(
-                "INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)", 
-                (username, generate_password_hash(password), role)
-            )
-            conn.commit()
+        users_col.insert_one({
+            "username": username,
+            "password_hash": generate_password_hash(password),
+            "role": role,
+            "created_at": datetime.datetime.utcnow().isoformat()
+        })
         return jsonify({"message": "User registered successfully"}), 201
-    except sqlite3.IntegrityError:
+    except pymongo.errors.DuplicateKeyError:
         return jsonify({"error": "Username already exists"}), 409
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
@@ -102,21 +77,22 @@ def login():
     username = data['username']
     password = data['password']
 
-    with get_db() as conn:
-        user = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+    if users_col is None:
+        return jsonify({"error": "Database unavailable"}), 500
+
+    user = users_col.find_one({"username": username})
     
     if user and check_password_hash(user["password_hash"], password):
         token = jwt.encode({
-            'user_id': user["id"],  # Important: Using the integer ID so history reconnects
+            'user_id': str(user["username"]), # Using username as ID for history persistence
             'username': user['username'],
-            'role': user['role'] if 'role' in user.keys() else 'user',
+            'role': user.get('role', 'user'),
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
         }, SECRET_KEY, algorithm='HS256')
 
-        return jsonify({"token": token, "role": user['role'] if 'role' in user.keys() else 'user'}), 200
+        return jsonify({"token": token, "role": user.get('role', 'user')}), 200
 
     return jsonify({"error": "Invalid username or password"}), 401
-
 
 def token_required(f):
     @wraps(f)
