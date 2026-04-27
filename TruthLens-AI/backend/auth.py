@@ -34,41 +34,6 @@ except Exception as e:
     print(f"Auth MongoDB Warning: {e}")
     users_col = None
 
-@auth_bp.route('/restore-original-users-once', methods=['GET'])
-def restore_original_users():
-    try:
-        if users_col is not None:
-            # CLEANUP: Drop conflicting email index if it exists
-            try:
-                users_col.drop_index("email_1")
-            except Exception as e:
-                print(f"Index drop warning: {e}")
-
-            users_col.delete_many({})
-            users_to_restore = [
-                {"username": "admin", "password": "admin", "role": "admin"},
-                {"username": "Ankit", "password": "admin", "role": "user"},
-                {"username": "RajAnkit27", "password": "RajAnkit27@", "role": "user"},
-                {"username": "Rajankit27", "password": "RajAnkit27@", "role": "user"},
-                {"username": "RajAnkit27-RA", "password": "RajAnkit27@", "role": "user"}
-            ]
-            for u in users_to_restore:
-                # Use update_one with upsert to avoid DuplicateKeyError if some already exist
-                users_col.update_one(
-                    {"username": u["username"]},
-                    {"$set": {
-                        "username": u["username"],
-                        "password_hash": generate_password_hash(u["password"]),
-                        "role": u["role"],
-                        "created_at": datetime.datetime.utcnow().isoformat()
-                    }},
-                    upsert=True
-                )
-            return "Users restored successfully. You can now login.", 200
-        return "Database unavailable", 500
-    except Exception as e:
-        return str(e), 500
-
 @auth_bp.route('/status', methods=['GET'])
 def auth_status():
     if users_col is None:
