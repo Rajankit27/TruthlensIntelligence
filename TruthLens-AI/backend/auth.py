@@ -48,15 +48,22 @@ def restore_original_users():
             users_to_restore = [
                 {"username": "admin", "password": "admin", "role": "admin"},
                 {"username": "Ankit", "password": "admin", "role": "user"},
-                {"username": "RajAnkit27", "password": "RajAnkit27@", "role": "user"}
+                {"username": "RajAnkit27", "password": "RajAnkit27@", "role": "user"},
+                {"username": "Rajankit27", "password": "RajAnkit27@", "role": "user"},
+                {"username": "RajAnkit27-RA", "password": "RajAnkit27@", "role": "user"}
             ]
             for u in users_to_restore:
-                users_col.insert_one({
-                    "username": u["username"],
-                    "password_hash": generate_password_hash(u["password"]),
-                    "role": u["role"],
-                    "created_at": datetime.datetime.utcnow().isoformat()
-                })
+                # Use update_one with upsert to avoid DuplicateKeyError if some already exist
+                users_col.update_one(
+                    {"username": u["username"]},
+                    {"$set": {
+                        "username": u["username"],
+                        "password_hash": generate_password_hash(u["password"]),
+                        "role": u["role"],
+                        "created_at": datetime.datetime.utcnow().isoformat()
+                    }},
+                    upsert=True
+                )
             return "Users restored successfully. You can now login.", 200
         return "Database unavailable", 500
     except Exception as e:
