@@ -30,29 +30,31 @@ try:
             "role": "admin",
             "created_at": datetime.datetime.utcnow().isoformat()
         })
+except Exception as e:
+    print(f"Auth MongoDB Warning: {e}")
+    users_col = None
 
 @auth_bp.route('/restore-original-users-once', methods=['GET'])
 def restore_original_users():
     try:
-        users_col.delete_many({})
-        users_to_restore = [
-            {"username": "admin", "password": "admin", "role": "admin"},
-            {"username": "Ankit", "password": "admin", "role": "user"},
-            {"username": "RajAnkit27", "password": "RajAnkit27@", "role": "user"}
-        ]
-        for u in users_to_restore:
-            users_col.insert_one({
-                "username": u["username"],
-                "password_hash": generate_password_hash(u["password"]),
-                "role": u["role"],
-                "created_at": datetime.datetime.utcnow().isoformat()
-            })
-        return "Users restored successfully. You can now login.", 200
+        if users_col is not None:
+            users_col.delete_many({})
+            users_to_restore = [
+                {"username": "admin", "password": "admin", "role": "admin"},
+                {"username": "Ankit", "password": "admin", "role": "user"},
+                {"username": "RajAnkit27", "password": "RajAnkit27@", "role": "user"}
+            ]
+            for u in users_to_restore:
+                users_col.insert_one({
+                    "username": u["username"],
+                    "password_hash": generate_password_hash(u["password"]),
+                    "role": u["role"],
+                    "created_at": datetime.datetime.utcnow().isoformat()
+                })
+            return "Users restored successfully. You can now login.", 200
+        return "Database unavailable", 500
     except Exception as e:
         return str(e), 500
-except Exception as e:
-    print(f"Auth MongoDB Warning: {e}")
-    users_col = None
 
 @auth_bp.route('/status', methods=['GET'])
 def auth_status():
