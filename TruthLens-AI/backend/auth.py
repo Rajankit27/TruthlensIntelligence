@@ -38,6 +38,12 @@ except Exception as e:
 def restore_original_users():
     try:
         if users_col is not None:
+            # CLEANUP: Drop conflicting email index if it exists
+            try:
+                users_col.drop_index("email_1")
+            except Exception as e:
+                print(f"Index drop warning: {e}")
+
             users_col.delete_many({})
             users_to_restore = [
                 {"username": "admin", "password": "admin", "role": "admin"},
