@@ -65,9 +65,8 @@ try:
         # This doubles as a connection ping test!
         history_col.create_index([("user_id", 1), ("timestamp", -1)], background=True)
     except Exception as idx_e:
-        print(f"Warning: MongoDB is currently unreachable. Disabling sync: {idx_e}")
-        history_col = None
-        users_col = None
+        print(f"Warning: MongoDB connection test failed: {idx_e}")
+        # Note: We don't set to None here anymore unless the client itself fails
         
     if history_col is not None:
         try:
@@ -116,13 +115,18 @@ def save_history_background(data):
             if "url" in data and data["url"]:
                 existing = history_col.find_one({"user_id": data["user_id"], "url": data["url"]})
                 if existing:
+                    print(f"Duplicate scan detected for {data['user_id']} - skipping increment.")
                     return
                     
-            history_col.insert_one(data)
+            res = history_col.insert_one(data)
+            print(f"History saved for {data['user_id']}: {res.inserted_id}")
             
             # Atomic Consistency Increment
             if users_col is not None:
-                users_col.update_one({"username": data["user_id"]}, {"$inc": {"scan_count": 1}})
+                upd = users_col.update_one({"username": data["user_id"]}, {"$inc": {"scan_count": 1}})
+                print(f"Incrementing scan_count for {data['user_id']}: matched={upd.matched_count}, modified={upd.modified_count}")
+            else:
+                print("Warning: users_col is None, skipping increment.")
     except Exception as e:
         print(f"MongoDB background insert warning: {e}")
     finally:
