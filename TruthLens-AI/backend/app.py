@@ -70,10 +70,10 @@ try:
         
     if history_col is not None:
         try:
-            # Compound unique index on history (user_id + url)
-            history_col.create_index([("user_id", 1), ("url", 1)], unique=True, partialFilterExpression={"url": {"$exists": True, "$ne": ""}}, background=True)
+            # Regular index for performance (removed unique constraint)
+            history_col.create_index([("user_id", 1), ("url", 1)], background=True)
         except Exception as idx_e:
-            print(f"Warning: Could not create unique index (duplicates may exist): {idx_e}")
+            print(f"Warning: Could not create history index: {idx_e}")
         
     def run_safe_migration():
         import time
@@ -111,13 +111,7 @@ def save_history_background(data):
                 print("Warning: Dropping history record missing user_id.")
                 return
                 
-            # Duplicate Protection
-            if "url" in data and data["url"]:
-                existing = history_col.find_one({"user_id": data["user_id"], "url": data["url"]})
-                if existing:
-                    print(f"Duplicate scan detected for {data['user_id']} - skipping increment.")
-                    return
-                    
+            # History is saved for every attempt (duplicate protection removed)
             res = history_col.insert_one(data)
             print(f"History saved for {data['user_id']}: {res.inserted_id}")
             
