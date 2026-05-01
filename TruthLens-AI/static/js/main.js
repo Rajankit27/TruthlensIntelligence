@@ -636,13 +636,29 @@ document.addEventListener('DOMContentLoaded', () => {
                             ? "result-fake"
                             : "result-unknown";
 
+                let titleContent = item.query || "Diagnostic Record";
+                let sourceContent = "";
+                if (item.headline) {
+                    const truncHeadline = item.headline.length > 80 ? item.headline.substring(0, 80) + "..." : item.headline;
+                    const safeTooltip = item.headline.replace(/"/g, '&quot;');
+                    if (item.url) {
+                        titleContent = `<a href="${item.url}" target="_blank" title="${safeTooltip}" style="text-decoration: none; color: inherit;">📰 ${truncHeadline}</a>`;
+                    } else {
+                        titleContent = `<span title="${safeTooltip}" style="color: inherit;">📰 ${truncHeadline}</span>`;
+                    }
+                    sourceContent = `Source: ${item.source || "Unknown"}<br>`;
+                }
+                
+                const icon = item.result === "REAL" ? "✔" : (item.result === "FAKE" ? "✖" : "❓");
+
                 div.innerHTML = `
-            <div class="history-title">${item.query || "Diagnostic Record"}</div>
+            <div class="history-title">${titleContent}</div>
             <div class="history-meta">
+              ${sourceContent}
               ${new Date(item.timestamp).toLocaleString()}
             </div>
             <span class="result-badge ${statusClass}">
-              ${item.result} (${item.confidence || 0}%)
+              ${icon} ${item.result} (${item.confidence || 0}%)
             </span>
           `;
                 container.appendChild(div);

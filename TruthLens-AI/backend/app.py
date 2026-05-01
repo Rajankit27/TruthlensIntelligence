@@ -81,6 +81,10 @@ def save_history_background(data):
         return
     try:
         if history_col is not None:
+            if "url" in data and data["url"]:
+                existing = history_col.find_one({"user_id": data["user_id"], "url": data["url"]})
+                if existing:
+                    return
             history_col.insert_one(data)
     except Exception as e:
         print(f"MongoDB background insert warning: {e}")
@@ -286,6 +290,9 @@ def predict():
                 record = {
                     "user_id": request.user["user_id"],
                     "query": title_text,
+                    "headline": "Manual Text Analysis",
+                    "source": "User Input",
+                    "url": "",
                     "result": str(prediction).upper(),
                     "confidence": round(confidence * 100, 2),
                     "timestamp": datetime.datetime.utcnow().isoformat() + "Z"
@@ -331,13 +338,47 @@ def analyze_url():
         ]
 
         is_trusted_domain = any(src in domain for src in trusted_sources)
+        source_map = {
+            "bbc.co.uk": "BBC",
+            "bbc.com": "BBC",
+            "nytimes.com": "NYTimes",
+            "reuters.com": "Reuters",
+            "apnews.com": "AP News",
+            "cnn.com": "CNN",
+            "ndtv.com": "NDTV",
+            "hindustantimes.com": "Hindustan Times",
+            "thehindu.com": "The Hindu",
+            "indianexpress.com": "Indian Express",
+            "indiatoday.in": "India Today",
+            "news18.com": "News18",
+            "theguardian.com": "The Guardian",
+            "wsj.com": "WSJ",
+            "washingtonpost.com": "Washington Post",
+            "bloomberg.com": "Bloomberg",
+            "aljazeera.com": "Al Jazeera"
+        }
+        
+        domain_clean = domain.replace("www.", "")
+        if domain_clean in source_map:
+            source_name = source_map[domain_clean]
+        else:
+            source_name = domain_clean.split(".")[0].title() if "." in domain_clean else domain_clean.title()
 
+        headline = ""
         # If it's a known trusted domain, we don't strictly need to scrape if it fails
         try:
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36'}
             resp = requests.get(url, timeout=10, headers=headers)
             resp.raise_for_status()
             soup = BeautifulSoup(resp.content, "html.parser")
+            
+            og_title = soup.find("meta", property="og:title")
+            if og_title and og_title.get("content"):
+                headline = og_title["content"].strip()
+                
+            if not headline or headline.lower() in ["home", "news", "article"]:
+                if soup.title and soup.title.string:
+                    headline = soup.title.string.strip()
             
             # Remove scripts and styles
             for element in soup(["script", "style", "noscript", "meta"]):
@@ -438,13 +479,20 @@ def analyze_url():
         try:
             if history_col is not None and hasattr(request, "user") and "user_id" in request.user:
                 title_text = f"[{url}] " + (raw_text[:40] + "..." if len(raw_text) > 40 else raw_text)
+                
+                final_headline = headline if headline else f"Article from {source_name}"
+                if len(final_headline) > 80:
+                    final_headline = final_headline[:77] + "..."
+                    
                 record = {
                     "user_id": request.user["user_id"],
                     "query": title_text,
+                    "headline": final_headline,
+                    "source": source_name,
+                    "url": url,
                     "result": str(prediction).upper(),
                     "confidence": round(confidence * 100, 2),
                     "username": request.user.get("username", "unknown"),
-                    "url": url,
                     "prediction": str(prediction).upper(),
                     "timestamp": datetime.datetime.utcnow().isoformat() + "Z"
                 }
@@ -487,7 +535,7 @@ def history():
             
         records = list(history_col.find(
             {"user_id": user_id},
-            {"_id": 0, "query": 1, "result": 1, "confidence": 1, "timestamp": 1}
+            {"_id": 0, "query": 1, "result": 1, "confidence": 1, "timestamp": 1, "headline": 1, "source": 1, "url": 1}
         ).sort("timestamp", pymongo.DESCENDING).limit(10))
         
         # If DB is empty, provide fake demo data
