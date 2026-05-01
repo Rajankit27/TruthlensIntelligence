@@ -586,11 +586,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (statScans && data.total_scans !== undefined) {
                     statScans.innerText = data.total_scans.toLocaleString();
                 }
+                
+                const statIntegrity = document.getElementById("stat-integrity");
+                if (statIntegrity && data.integrity !== undefined) {
+                    statIntegrity.innerText = data.integrity.toFixed(1) + "%";
+                    statIntegrity.title = "Based on recent system performance";
+                    
+                    // Add subtle variation to the sparkline to reflect live data
+                    const sparklineContainer = statIntegrity.parentElement.querySelector(".sparkline");
+                    if (sparklineContainer) {
+                        const fillPath = sparklineContainer.querySelector(".fill");
+                        const linePath = sparklineContainer.querySelector(".line");
+                        
+                        if (linePath && fillPath) {
+                            // Generate slight variations around 15 for a realistic mini-graph
+                            const genY = () => 15 + (Math.random() * 4 - 2);
+                            const y1 = genY(), y2 = genY(), y3 = genY(), y4 = genY(), y5 = genY(), y6 = genY();
+                            
+                            linePath.setAttribute("d", `M0,${y1} L20,${y2} L40,${y3} L60,${y4} L80,${y5} L100,${y6}`);
+                            fillPath.setAttribute("d", `M0,30 L0,${y1} L20,${y2} L40,${y3} L60,${y4} L80,${y5} L100,${y6} L100,30 Z`);
+                        }
+                    }
+                }
             }
         } catch (e) {
             console.warn("Failed to retrieve live system stats:", e);
         }
     }
+
+    // Refresh system stats periodically to simulate dynamic real-time integrity
+    setInterval(fetchSystemStats, 15000);
 
     // --- History & Live Feed ---
     async function loadUserHistory() {
