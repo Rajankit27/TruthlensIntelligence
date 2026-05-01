@@ -28,7 +28,8 @@ try:
             "username": "admin",
             "password_hash": generate_password_hash("admin"),
             "role": "admin",
-            "created_at": datetime.datetime.utcnow().isoformat()
+            "created_at": datetime.datetime.utcnow().isoformat(),
+            "scan_count": 0
         })
 except Exception as e:
     print(f"Auth MongoDB Warning: {e}")
@@ -70,7 +71,8 @@ def register():
             "username": username,
             "password_hash": generate_password_hash(password),
             "role": role,
-            "created_at": datetime.datetime.utcnow().isoformat()
+            "created_at": datetime.datetime.utcnow().isoformat(),
+            "scan_count": 0
         })
         return jsonify({"message": "User registered successfully"}), 201
     except pymongo.errors.DuplicateKeyError:

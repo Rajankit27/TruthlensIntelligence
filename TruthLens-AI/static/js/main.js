@@ -578,7 +578,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchSystemStats() {
         try {
-            const res = await fetch("/system/stats");
+            const token = localStorage.getItem("token");
+            const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+            const res = await fetch("/system/stats", { headers });
             if (res.ok) {
                 const data = await res.json();
                 if (statScans && data.total_scans !== undefined) {

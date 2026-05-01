@@ -58,18 +58,39 @@ try:
     db = mongo_client["truthlens"]
     history_col = db["history"]
     disputes_col = db["disputes"]
+    users_col = db["users"]
     
     # Ensure index creation does NOT break startup if DB is down initially
     try:
         # This doubles as a connection ping test!
         history_col.create_index([("user_id", 1), ("timestamp", -1)], background=True)
+        # Compound unique index on history (user_id + url)
+        history_col.create_index([("user_id", 1), ("url", 1)], unique=True, partialFilterExpression={"url": {"$exists": True, "$ne": ""}}, background=True)
     except Exception as idx_e:
         print(f"Warning: MongoDB is currently unreachable. Disabling sync: {idx_e}")
         history_col = None
+        users_col = None
+        
+    def run_safe_migration():
+        import time
+        if users_col is None or history_col is None: return
+        try:
+            users_missing_scan = users_col.find({"scan_count": {"$exists": False}})
+            for u in users_missing_scan:
+                uid = u["username"]
+                count = history_col.count_documents({"user_id": uid})
+                users_col.update_one({"_id": u["_id"]}, {"$set": {"scan_count": count}})
+                time.sleep(0.05)
+            print("Migration complete: initialized missing scan_count fields.")
+        except Exception as e:
+            print(f"Migration error: {e}")
+
+    threading.Thread(target=run_safe_migration, daemon=True).start()
         
 except Exception as e:
     print(f"Warning: MongoDB setup failed: {e}")
     history_col = None
+    users_col = None
 
 # Lightweight thread control for background inserts
 insert_semaphore = threading.Semaphore(20)
@@ -81,11 +102,22 @@ def save_history_background(data):
         return
     try:
         if history_col is not None:
+            # Data Integrity: Reject invalid entries missing user_id
+            if "user_id" not in data or not data["user_id"]:
+                print("Warning: Dropping history record missing user_id.")
+                return
+                
+            # Duplicate Protection
             if "url" in data and data["url"]:
                 existing = history_col.find_one({"user_id": data["user_id"], "url": data["url"]})
                 if existing:
                     return
+                    
             history_col.insert_one(data)
+            
+            # Atomic Consistency Increment
+            if users_col is not None:
+                users_col.update_one({"username": data["user_id"]}, {"$inc": {"scan_count": 1}})
     except Exception as e:
         print(f"MongoDB background insert warning: {e}")
     finally:
@@ -565,29 +597,25 @@ def history():
         ])
 
 @app.route("/system/stats", methods=["GET"])
+@token_required
 def system_stats():
-    """Return live system statistics like total overall global scans."""
+    """Return isolated system statistics for the logged in user."""
     try:
-        import random
         scans = 0
-        if history_col is not None:
-            try:
-                scans = history_col.count_documents({})
-            except Exception:
-                scans = 0
+        user_id = request.user.get("user_id") if hasattr(request, "user") else None
         
-        # If DB offline or empty, provide a realistic demo number
-        if scans == 0:
-            # Seed with a consistent relative number based on current hour to look "stable" but live
-            import time
-            hour_seed = int(time.time() // 3600)
-            random.seed(hour_seed)
-            scans = 1240 + random.randint(-15, 25)
-            
+        if user_id and users_col is not None:
+            user = users_col.find_one({"username": user_id})
+            if user and "scan_count" in user:
+                scans = user["scan_count"]
+            elif history_col is not None:
+                # Fallback if migration hasn't completed yet
+                scans = history_col.count_documents({"user_id": user_id})
+                
         return jsonify({"total_scans": scans})
     except Exception as e:
         print(f"Error fetching stats: {e}")
-        return jsonify({"total_scans": 1240}) 
+        return jsonify({"total_scans": 0}) 
 
 @app.route("/dispute", methods=["POST"])
 @token_required
