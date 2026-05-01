@@ -64,12 +64,17 @@ try:
     try:
         # This doubles as a connection ping test!
         history_col.create_index([("user_id", 1), ("timestamp", -1)], background=True)
-        # Compound unique index on history (user_id + url)
-        history_col.create_index([("user_id", 1), ("url", 1)], unique=True, partialFilterExpression={"url": {"$exists": True, "$ne": ""}}, background=True)
     except Exception as idx_e:
         print(f"Warning: MongoDB is currently unreachable. Disabling sync: {idx_e}")
         history_col = None
         users_col = None
+        
+    if history_col is not None:
+        try:
+            # Compound unique index on history (user_id + url)
+            history_col.create_index([("user_id", 1), ("url", 1)], unique=True, partialFilterExpression={"url": {"$exists": True, "$ne": ""}}, background=True)
+        except Exception as idx_e:
+            print(f"Warning: Could not create unique index (duplicates may exist): {idx_e}")
         
     def run_safe_migration():
         import time
